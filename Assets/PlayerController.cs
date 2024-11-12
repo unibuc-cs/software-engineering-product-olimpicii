@@ -7,9 +7,9 @@ public class PlayerController : MonoBehaviour
     public List<GameObject> soldiers = new List<GameObject>();
     public float moveSpeed = 5f;
     public float forwardSpeed = 10f;
-    public float laneWidth = 3f; // Width of each "lane" distance
+    public float laneWidth = 3f;
 
-    private float targetXPosition = 0f; 
+    private float targetXPosition = 0f;
 
     void Start()
     {
@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
         // Continuous forward movement
         transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
-     
         if (Input.GetKeyDown(KeyCode.A))
         {
             MoveLeft();
@@ -35,52 +34,61 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
     }
 
-
     void MoveLeft()
     {
-        
         targetXPosition -= laneWidth;
     }
 
- 
     void MoveRight()
     {
         targetXPosition += laneWidth;
     }
 
-    public void ModifySoldiers(string operation, int value)
+    public void ModifySoldiers(OperationType operation, int value)
     {
         int currentCount = soldiers.Count;
-        if (operation == "multiply")
+        int newSoldierCount = currentCount;
+
+        switch (operation)
         {
-            int newCount = currentCount * value;
-            SpawnSoldiers(newCount - currentCount);
+            case OperationType.Add:
+                newSoldierCount = currentCount + value;
+                break;
+            case OperationType.Multiply:
+                newSoldierCount = currentCount * value;
+                break;
+            case OperationType.Subtract:
+                newSoldierCount = Mathf.Max(currentCount - value, 0);
+                break;
+            case OperationType.SqrtAdd:
+                newSoldierCount = Mathf.CeilToInt(Mathf.Sqrt(currentCount)) + value;
+                break;
         }
-        else if (operation == "add")
-        {
-            SpawnSoldiers(value);
-        }
+
+        int difference = newSoldierCount - currentCount;
+        if (difference > 0)
+            SpawnSoldiers(difference);
+        else
+            RemoveSoldiers(-difference);
     }
 
     void SpawnSoldiers(int count)
     {
-        int gridRows = Mathf.CeilToInt(Mathf.Sqrt(count)); 
-        int gridCols = Mathf.CeilToInt((float)count / gridRows); // sa fie in grup soldatii
-        float spacing = 1.5f; 
+        int gridRows = Mathf.CeilToInt(Mathf.Sqrt(count));
+        int gridCols = Mathf.CeilToInt((float)count / gridRows);
+        float spacing = 1.8f;
 
         for (int i = 0; i < count; i++)
         {
             int row = i / gridCols;
             int col = i % gridCols;
 
-         
             Vector3 spawnOffset = new Vector3((col - gridCols / 2f) * spacing, 0, (row - gridRows / 2f) * spacing);
             Vector3 spawnPosition = transform.position + spawnOffset;
 
-          
             GameObject soldier = Instantiate(soldierPrefab, spawnPosition, Quaternion.identity);
             soldiers.Add(soldier);
-            soldier.transform.parent = transform; 
+            soldier.transform.parent = transform;
         }
     }
 
