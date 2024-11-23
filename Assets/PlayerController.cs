@@ -37,9 +37,9 @@ public class PlayerController : MonoBehaviour
         {
             MoveRight();
         }
-        else if (Input.GetKeyDown(KeyCode.P))
+        else if (Input.GetKeyDown(KeyCode.F))
         {
-            SpawnSoldiers(1);
+            ModifySoldiers("multiply", 2);
         }
 
         PullSoldiersCloser();
@@ -64,15 +64,23 @@ public class PlayerController : MonoBehaviour
     public void ModifySoldiers(string operation, int value)
     {
         int currentCount = soldiers.Count;
-        if (operation == "multiply")
+
+        switch (operation)
         {
-            int newCount = currentCount * value;
-            SpawnSoldiers(newCount - currentCount);
+            case "+":
+                SpawnSoldiers(value);
+                break;
+            case "-":
+                RemoveSoldiers(value);
+                break;
+            case "*":
+                SpawnSoldiers(currentCount * (value - 1));
+                break;
+            case "/":
+                RemoveSoldiers(currentCount - (currentCount / value));
+                break;
         }
-        else if (operation == "add")
-        {
-            SpawnSoldiers(value);
-        }
+
     }
 
     void SpawnSoldiers(int count)
@@ -81,9 +89,8 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
          
-            Vector3 spawnOffset = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0, UnityEngine.Random.Range(-1.0f, 1.0f));
+            Vector3 spawnOffset = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f) * Mathf.Sqrt(soldiers.Count), 0, UnityEngine.Random.Range(-1.0f, 1.0f) * Mathf.Sqrt(soldiers.Count));
             Vector3 spawnPosition = transform.position + spawnOffset;
-
           
             GameObject soldier = Instantiate(soldierPrefab, spawnPosition, Quaternion.identity);
             soldiers.Add(soldier);
