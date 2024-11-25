@@ -67,4 +67,14 @@ public class CheckpointGate : MonoBehaviour
             }
         }
     }
+    public void ConfigureGate(OperationType option1Op, int option1Val, OperationType option2Op, int option2Val)
+    {
+        option1Operation = option1Op;
+        value1 = option1Val;
+        option2Operation = option2Op;
+        value2 = option2Val;
+        Debug.Log($"Configuring gate: {gameObject.name}");
+        Debug.Log($"Option1: {option1Operation} {value1}, Option2: {option2Operation} {value2}");
+        UpdateGateLabels();
+    }
 }
