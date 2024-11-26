@@ -685,16 +685,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: CheckpointGate
       objectReference: {fileID: 0}
+    - target: {fileID: 5611685055689320828, guid: f2c525ba0809673428235d1f00e2b5bd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 827194883511503324, guid: f2c525ba0809673428235d1f00e2b5bd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 6931160271090702260, guid: f2c525ba0809673428235d1f00e2b5bd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2c525ba0809673428235d1f00e2b5bd, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

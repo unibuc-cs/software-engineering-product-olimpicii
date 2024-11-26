@@ -49,7 +49,7 @@ public class CheckpointGate : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("am intrat");
+        
         if (other.CompareTag("Player"))
         {
             
