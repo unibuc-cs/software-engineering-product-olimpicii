@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Continuous forward movement
-        // transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -36,10 +36,10 @@ public class PlayerController : MonoBehaviour
         {
             MoveRight();
         }
-        else if (Input.GetKeyDown(KeyCode.F))
-        {
-            ModifySoldiers("multiply", 2);
-        }
+        //else if (Input.GetKeyDown(KeyCode.F))
+        //{
+        //    ModifySoldiers("multiply", 2);
+        //}
 
         PullSoldiersCloser();
 
