@@ -443,6 +443,33 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9084251916471959927, guid: 2e5c9302ff959af48a02a64fa01dc7b3, type: 3}
   m_PrefabInstance: {fileID: 4055659627960945906}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &1708216103
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708216102}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1779875544
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,6 +599,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2905452799167631962, guid: 2e5c9302ff959af48a02a64fa01dc7b3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4850c1079124a9b4995eb22a81a52437, type: 2}
     - target: {fileID: 3425696672556559142, guid: 2e5c9302ff959af48a02a64fa01dc7b3, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -631,7 +662,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9084251916471959927, guid: 2e5c9302ff959af48a02a64fa01dc7b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1708216103}
   m_SourcePrefab: {fileID: 100100000, guid: 2e5c9302ff959af48a02a64fa01dc7b3, type: 3}
 --- !u!1001 &7364050227369446969
 PrefabInstance:

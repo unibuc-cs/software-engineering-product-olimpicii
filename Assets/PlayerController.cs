@@ -1,8 +1,14 @@
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private float pullStrength = 0.1f;
+
     public GameObject soldierPrefab;
     public List<GameObject> soldiers = new List<GameObject>();
     public float moveSpeed = 5f;
@@ -14,12 +20,13 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         SpawnSoldiers(1); // Spawn initial soldiers
+       
     }
 
     void Update()
     {
         // Continuous forward movement
-        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+        // transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -29,6 +36,12 @@ public class PlayerController : MonoBehaviour
         {
             MoveRight();
         }
+        else if (Input.GetKeyDown(KeyCode.F))
+        {
+            ModifySoldiers("multiply", 2);
+        }
+
+        PullSoldiersCloser();
 
         Vector3 targetPosition = new Vector3(targetXPosition, transform.position.y, transform.position.z);
         transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
@@ -89,6 +102,17 @@ public class PlayerController : MonoBehaviour
             GameObject soldier = Instantiate(soldierPrefab, spawnPosition, Quaternion.identity);
             soldiers.Add(soldier);
             soldier.transform.parent = transform;
+        }
+    }
+
+    void PullSoldiersCloser()
+    {
+        foreach (GameObject soldier in soldiers)
+        {
+            Rigidbody rb = soldier.GetComponent<Rigidbody>();
+
+            Vector3 direction = (transform.position - soldier.transform.position).normalized;
+            rb.AddForce(direction * pullStrength, ForceMode.Impulse);
         }
     }
 
