@@ -124,16 +124,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void PullSoldiersCloser()
-    {
-        foreach (GameObject soldier in soldiers)
-        {
-            Rigidbody rb = soldier.GetComponent<Rigidbody>();
-
-            Vector3 direction = (transform.position - soldier.transform.position).normalized;
-            rb.AddForce(direction * pullStrength, ForceMode.Impulse);
-        }
-    }
+   
 
     public void RemoveSoldiers(int count)
     {
