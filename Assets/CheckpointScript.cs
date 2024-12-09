@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class CheckpointGate : MonoBehaviour
 {
-    public OperationType option1Operation;
-    public int value1;
-    public OperationType option2Operation;
-    public int value2;
+    public GateOption gateOption1; // Reference to GateOption1 script
+    public GateOption gateOption2; // Reference to GateOption2 script
 
     public TextMeshPro option1Text;
     public TextMeshPro option2Text;
@@ -17,64 +15,45 @@ public class CheckpointGate : MonoBehaviour
         UpdateGateLabels();
     }
 
-    private void UpdateGateLabels()
+    public void ConfigureGate(OperationType option1Op, int option1Val, OperationType option2Op, int option2Val)
     {
-        if (option1Text != null)
+        if (gateOption1 != null)
         {
-            option1Text.text = GetOperationText(option1Operation, value1);
+            gateOption1.operation = option1Op;
+            gateOption1.value = option1Val;
         }
 
-        if (option2Text != null)
+        if (gateOption2 != null)
         {
-            option2Text.text = GetOperationText(option2Operation, value2);
+            gateOption2.operation = option2Op;
+            gateOption2.value = option2Val;
+        }
+
+        UpdateGateLabels();
+    }
+
+    private void UpdateGateLabels()
+    {
+        if (option1Text != null && gateOption1 != null)
+        {
+            option1Text.text = GetOperationText(gateOption1.operation, gateOption1.value);
+        }
+
+        if (option2Text != null && gateOption2 != null)
+        {
+            option2Text.text = GetOperationText(gateOption2.operation, gateOption2.value);
         }
     }
 
     private string GetOperationText(OperationType operation, int value)
     {
-        switch (operation)
+        return operation switch
         {
-            case OperationType.Add:
-                return $"+{value}";
-            case OperationType.Multiply:
-                return $"x{value}";
-            case OperationType.Subtract:
-                return $"-{value}";
-            case OperationType.SqrtAdd:
-                return $"√x + {value}";
-            default:
-                return "";
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        
-        if (other.CompareTag("Player"))
-        {
-            
-            PlayerController playerController = other.GetComponent<PlayerController>();
-
-            if (other.bounds.Intersects(transform.Find("GateOption1").GetComponent<Collider>().bounds))
-            {
-                Debug.Log("am intrat poarta 1");
-                playerController.ModifySoldiers(option1Operation, value1);
-            }
-            else if (other.bounds.Intersects(transform.Find("GateOption2").GetComponent<Collider>().bounds))
-            {
-                Debug.Log("am intrat poarta 2");
-                playerController.ModifySoldiers(option2Operation, value2);
-            }
-        }
-    }
-    public void ConfigureGate(OperationType option1Op, int option1Val, OperationType option2Op, int option2Val)
-    {
-        option1Operation = option1Op;
-        value1 = option1Val;
-        option2Operation = option2Op;
-        value2 = option2Val;
-        Debug.Log($"Configuring gate: {gameObject.name}");
-        Debug.Log($"Option1: {option1Operation} {value1}, Option2: {option2Operation} {value2}");
-        UpdateGateLabels();
+            OperationType.Add => $"+{value}",
+            OperationType.Multiply => $"x{value}",
+            OperationType.Subtract => $"-{value}",
+            OperationType.SqrtAdd => $"√x + {value}",
+            _ => ""
+        };
     }
 }
