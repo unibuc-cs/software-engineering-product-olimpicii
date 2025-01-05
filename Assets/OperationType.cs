@@ -5,5 +5,7 @@ public enum OperationType
     Add,
     Multiply,
     Subtract,
-    SqrtAdd
+    SqrtAdd,
+    Logarithmic, // New operation
+    Equation     // New operation
 }

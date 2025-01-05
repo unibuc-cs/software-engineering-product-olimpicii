@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Continuous forward movement
-        // transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.A))
         {
