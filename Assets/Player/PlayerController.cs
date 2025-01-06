@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private float pullStrength = 0.1f;
+    public float pullStrength = 0.06f;
 
     public GameObject soldierPrefab;
     public List<GameObject> soldiers = new List<GameObject>();
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Continuous forward movement
-        // transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.A))
         {
