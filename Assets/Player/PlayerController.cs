@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private float pullStrength = 0.1f;
+    public float pullStrength = 0.06f;
 
     public GameObject soldierPrefab;
     public List<GameObject> soldiers = new List<GameObject>();
