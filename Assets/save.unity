@@ -318,6 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afa6850f4ad44314c882bc6eb3bfc5c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pullStrength: 0.06
   soldierPrefab: {fileID: 4119222105521057299, guid: d18c4ae7ef3f57448b7037e056bca463, type: 3}
   soldiers: []
   moveSpeed: 20
@@ -726,13 +727,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1379251624470409153, guid: 58c10e12905f2f24aa2a18452884e5e8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 7546319108588742042, guid: 58c10e12905f2f24aa2a18452884e5e8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58c10e12905f2f24aa2a18452884e5e8, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

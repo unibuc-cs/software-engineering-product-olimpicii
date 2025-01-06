@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6975219126337221961}
   - component: {fileID: -4627052360727953138}
   - component: {fileID: 5874822075021909686}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SoldierPrefab
   m_TagString: Soldier
   m_Icon: {fileID: 0}

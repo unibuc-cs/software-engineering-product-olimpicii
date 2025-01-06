@@ -17,7 +17,6 @@ public class SoldierShoot : MonoBehaviour
         if (timeSinceLastShot >= timeBetweenShots)
         {
             Instantiate(bullet, soldier.position, soldier.rotation);
-            Debug.Log("trage");
 
             timeSinceLastShot = 0f;
         }
