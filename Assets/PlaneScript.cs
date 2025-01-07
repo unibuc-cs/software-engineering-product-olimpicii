@@ -17,7 +17,7 @@ public class PlatformManager : MonoBehaviour
     private float spawnZ = 0f;
     private float safeZone = 30f;
 
-    public Transform gateContainer;
+    
     private EnemyController enemyControllerScript;
     private float nextGateZ = 0f; 
     void Start()
