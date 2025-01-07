@@ -19,6 +19,10 @@ public class BulletController : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Destroy(gameObject);
+    }
 
+    void OnCollisionEnter(Collision other)
+    {
+        Debug.Log("am nimerit cv");
     }
 }

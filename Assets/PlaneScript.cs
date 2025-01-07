@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class PlatformManager : MonoBehaviour
@@ -13,19 +14,30 @@ public class PlatformManager : MonoBehaviour
     private float spawnZ = 0f;
     private float safeZone = 30f;
     public Transform gateContainer;
+    private EnemyController enemyControllerScript;
 
     void Start()
     {
+        Transform enemyController = GameObject.Find("enemySpawnPoint").transform;
+        enemyControllerScript = enemyController.GetComponent<EnemyController>();
+
         for (int i = 0; i < initialPlatformCount; i++)
             SpawnPlatform(true);
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            enemyControllerScript.SpawnEnemies(10);
+        }
+
         if (playerTransform.position.z - safeZone > (spawnZ - initialPlatformCount * platformLength))
         {
             SpawnPlatform(false);
             DeletePlatform();
+            //enemyControllerScript.SpawnEnemies(10);
+            //as adauga aici logica de gate sau enemy in loc de in spawnPlatform
         }
     }
 

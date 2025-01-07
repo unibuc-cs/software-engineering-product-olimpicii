@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float pullStrength = 0.06f;
+    public float pullStrength;
 
     public GameObject soldierPrefab;
     public List<GameObject> soldiers = new List<GameObject>();
@@ -19,8 +19,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        SpawnSoldiers(1); // Spawn initial soldiers
-       
+        SpawnSoldiers(1); // Spawn initial soldier
     }
 
     void Update()
@@ -36,11 +35,6 @@ public class PlayerController : MonoBehaviour
         {
             MoveRight();
         }
-
-        //else if (Input.GetKeyDown(KeyCode.F))
-        //{
-        //    ModifySoldiers("multiply", 2);
-        //}
 
         PullSoldiersCloser();
 
@@ -115,8 +109,17 @@ public class PlayerController : MonoBehaviour
 
     void PullSoldiersCloser()
     {
-        foreach (GameObject soldier in soldiers)
-        {
+        for (int i = 0; i < soldiers.Count; i++)
+        { 
+            GameObject soldier = soldiers[i];
+
+            if (soldier == null)
+            {
+                soldiers.RemoveAt(i);
+                i--;
+                continue;
+            }
+
             Rigidbody rb = soldier.GetComponent<Rigidbody>();
 
             Vector3 direction = (transform.position - soldier.transform.position).normalized;
