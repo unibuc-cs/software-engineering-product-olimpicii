@@ -15,4 +15,10 @@ public class BulletController : MonoBehaviour
     {
         rb.linearVelocity = new Vector3(0, 0, speed);
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Destroy(gameObject);
+
+    }
 }
