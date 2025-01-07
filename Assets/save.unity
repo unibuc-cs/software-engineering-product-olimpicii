@@ -473,6 +473,7 @@ MonoBehaviour:
   initialPlatformCount: 5
   playerTransform: {fileID: 1270568419}
   gateContainer: {fileID: 152253896}
+  gateSpacing: 100
 --- !u!4 &1538649890
 Transform:
   m_ObjectHideFlags: 0
