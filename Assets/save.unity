@@ -367,8 +367,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pullStrength: 0.06
+  bigToSmallSoldierRatio: 10
   soldierPrefab: {fileID: 4119222105521057299, guid: d18c4ae7ef3f57448b7037e056bca463, type: 3}
-  soldiers: []
+  bigSoldierPrefab: {fileID: 4119222105521057299, guid: 01d3226c602ad9b4aa577db558ae504c, type: 3}
   moveSpeed: 20
   forwardSpeed: 10
   laneWidth: 3
