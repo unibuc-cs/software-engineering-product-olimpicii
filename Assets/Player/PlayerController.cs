@@ -8,9 +8,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float pullStrength;
+    public int bigToSmallSoldierRatio;
 
     public GameObject soldierPrefab;
-    public List<GameObject> soldiers = new List<GameObject>();
+    public GameObject bigSoldierPrefab;
+    private List<GameObject> soldiers = new List<GameObject>();
+    private List<GameObject> bigSoldiers = new List<GameObject>();
     public float moveSpeed = 5f;
     public float forwardSpeed = 10f;
     public float laneWidth = 3f;
@@ -40,6 +43,29 @@ public class PlayerController : MonoBehaviour
 
         Vector3 targetPosition = new Vector3(targetXPosition, transform.position.y, transform.position.z);
         transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+
+        makeBigSoldiers();
+    }
+
+    void makeBigSoldiers()
+    {
+        if(soldiers.Count > bigToSmallSoldierRatio)
+        {
+            int bigSoldiersToSpawn = soldiers.Count / bigToSmallSoldierRatio;
+
+            for (int i = 0; i < bigSoldiersToSpawn * bigToSmallSoldierRatio; i++)
+            {
+                Destroy(soldiers[i]);
+            }
+            soldiers.RemoveRange(0, bigSoldiersToSpawn * bigToSmallSoldierRatio);
+
+            SpawnBigSoldiers(bigSoldiersToSpawn);
+        }
+    }
+
+    public void SplitBigEnemy()
+    {
+        SpawnSoldiers(bigToSmallSoldierRatio);
     }
 
     void MoveLeft()
@@ -107,6 +133,29 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void SpawnBigSoldiers(int count)  // cam pucheala codu aici dar ar dura mai mult sa l fac sa accepte orice tip ca ar trb sa fac un hashmap cu liste sau n am alta idee :(
+    {
+
+        int gridRows = Mathf.CeilToInt(Mathf.Sqrt(count));
+        int gridCols = Mathf.CeilToInt((float)count / gridRows);
+        float spacing = 1.8f;
+
+        for (int i = 0; i < count; i++)
+        {
+            int row = i / gridCols;
+            int col = i % gridCols;
+
+            Vector3 spawnOffset = new Vector3((col - gridCols / 2f) * spacing, 0, (row - gridRows / 2f) * spacing);
+            Vector3 spawnPosition = transform.position + spawnOffset;
+
+
+            GameObject soldier = Instantiate(bigSoldierPrefab, spawnPosition, Quaternion.identity);
+            bigSoldiers.Add(soldier);
+            soldier.transform.parent = transform;
+        }
+    }
+
+
     void PullSoldiersCloser()
     {
         for (int i = 0; i < soldiers.Count; i++)
@@ -116,6 +165,23 @@ public class PlayerController : MonoBehaviour
             if (soldier == null)
             {
                 soldiers.RemoveAt(i);
+                i--;
+                continue;
+            }
+
+            Rigidbody rb = soldier.GetComponent<Rigidbody>();
+
+            Vector3 direction = (transform.position - soldier.transform.position).normalized;
+            rb.AddForce(direction * pullStrength, ForceMode.Impulse);
+        }
+
+        for (int i = 0; i < bigSoldiers.Count; i++)
+        {
+            GameObject soldier = bigSoldiers[i];
+
+            if (soldier == null)
+            {
+                bigSoldiers.RemoveAt(i);
                 i--;
                 continue;
             }
