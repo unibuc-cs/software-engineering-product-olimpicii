@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class ShootableGate : MonoBehaviour
 {
-    public int health = 10; // Number of bullets required to destroy the gate
-    public GameObject destructionEffect; // Optional effect when gate is destroyed
-    public TextMeshPro healthText; // Reference to the TMP text component
+    public int health = 10; 
+    public GameObject destructionEffect; 
+    public TextMeshPro healthText; 
 
     void Start()
     {
-        UpdateHealthText(); // Initialize the health text display
+        UpdateHealthText(); 
     }
 
  
