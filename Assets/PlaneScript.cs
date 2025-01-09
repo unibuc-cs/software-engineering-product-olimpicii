@@ -9,26 +9,34 @@ public class PlatformManager : MonoBehaviour
     public List<GameObject> gatePrefabs;
     public int platformLength = 20;
     public int initialPlatformCount = 5;
+    public int gateDistanceToPlayer;
     public Transform playerTransform;
     public Transform gateContainer;
     public float gateSpacing = 40f; 
+    
 
     private Queue<GameObject> activePlatforms = new Queue<GameObject>();
     private float spawnZ = 0f;
     private float safeZone = 30f;
+    private int platformsSpawned;
+    private int gatesSpawned;
 
     
     private EnemyController enemyControllerScript;
     private float nextGateZ = 0f; 
     void Start()
     {
-        nextGateZ = gateSpacing; 
+        nextGateZ = gateSpacing;
+        gatesSpawned = 0;
         Transform enemyController = GameObject.Find("enemySpawnPoint").transform;
         enemyControllerScript = enemyController.GetComponent<EnemyController>();
 
 
         for (int i = 0; i < initialPlatformCount; i++)
-            SpawnPlatform(true);
+        {
+            SpawnPlatform();
+        }
+
     }
 
     void Update()
@@ -38,30 +46,32 @@ public class PlatformManager : MonoBehaviour
             enemyControllerScript.SpawnEnemies(10);
         }
 
-        if (playerTransform.position.z - safeZone > (spawnZ - initialPlatformCount * platformLength))
+        if (playerTransform.position.z > platformsSpawned * platformLength)
         {
-            SpawnPlatform(false);
+            platformsSpawned++;
+            SpawnPlatform();
             DeletePlatform();
-            //enemyControllerScript.SpawnEnemies(10);
-            //as adauga aici logica de gate sau enemy in loc de in spawnPlatform
         }
-    }
 
-    void SpawnPlatform(bool initialSpawn)
-    {
-        GameObject newPlatform = Instantiate(platformPrefab, Vector3.forward * spawnZ, Quaternion.identity);
-        activePlatforms.Enqueue(newPlatform);
-
-        if (!initialSpawn && spawnZ >= nextGateZ)
+        if (playerTransform.position.z > gatesSpawned * gateSpacing)
         {
-            SpawnGate(newPlatform.transform);
-            nextGateZ += gateSpacing; 
+            gatesSpawned++;
+            GameObject newPlatform = Instantiate(platformPrefab, Vector3.forward * spawnZ, Quaternion.identity);
+            activePlatforms.Enqueue(newPlatform);
+            SpawnGate();
         }
 
-        spawnZ += platformLength;
+
     }
 
-    void SpawnGate(Transform platformTransform)
+    void SpawnPlatform()
+    {
+        GameObject newPlatform = Instantiate(platformPrefab, Vector3.forward * platformLength * (platformsSpawned + 1) , Quaternion.identity);
+        activePlatforms.Enqueue(newPlatform);
+        platformsSpawned++;
+    }
+
+    void SpawnGate()
     {
         if (gatePrefabs.Count > 0)
         {
@@ -69,7 +79,7 @@ public class PlatformManager : MonoBehaviour
             GameObject selectedGate = gatePrefabs[UnityEngine.Random.Range(0, gatePrefabs.Count)];
 
 
-            Vector3 gatePosition = platformTransform.position + new Vector3(0f, 0.5f, platformLength / 2f);
+            Vector3 gatePosition = new Vector3(0f, 0f, gateDistanceToPlayer + playerTransform.position.z);
             Quaternion gateRotation = Quaternion.Euler(0, 180, 0);
 
             GameObject gateInstance = Instantiate(selectedGate, gatePosition, gateRotation, gateContainer);

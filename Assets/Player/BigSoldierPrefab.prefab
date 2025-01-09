@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -153,3 +153,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 4110830987376507786, guid: f3707f936cd734f4d985fdd823a42c92, type: 3}
   soldier: {fileID: 6783983972438948803}
+  timeBetweenShots: 1
