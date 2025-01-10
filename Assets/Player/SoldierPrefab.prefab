@@ -108,6 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 4110830987376507786, guid: f3707f936cd734f4d985fdd823a42c92, type: 3}
   soldier: {fileID: 6783983972438948803}
+  timeBetweenShots: 1
 --- !u!1001 &4024498911185616433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -122,15 +123,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400060, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.175
+      value: 0.172
       objectReference: {fileID: 0}
     - target: {fileID: 400060, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.413
+      value: -0.699
       objectReference: {fileID: 0}
     - target: {fileID: 400060, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.38641024
+      value: -0.129
       objectReference: {fileID: 0}
     - target: {fileID: 400060, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
       propertyPath: m_LocalRotation.w
