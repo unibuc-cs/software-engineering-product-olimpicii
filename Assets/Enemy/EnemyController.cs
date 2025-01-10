@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     public float pullStrength;
     public float distanceToPlayer;
-
+    public bool sleep = true;
     public GameObject enemyPrefab;
     public GameObject player;
     private List<GameObject> enemies = new List<GameObject>();
@@ -44,6 +44,7 @@ public class EnemyController : MonoBehaviour
 
     private void PullEnemiesToPlayer()
     {
+        sleep = false;
         for (int i = 0; i <= enemies.Count - 1; i++)
         {
             if (enemies[i] == null)
