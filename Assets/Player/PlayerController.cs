@@ -12,17 +12,20 @@ public class PlayerController : MonoBehaviour
 
     public GameObject soldierPrefab;
     public GameObject bigSoldierPrefab;
+    private Rigidbody rb;
     private List<GameObject> soldiers = new List<GameObject>();
     private List<GameObject> bigSoldiers = new List<GameObject>();
     public float moveSpeed = 5f;
     public float forwardSpeed = 10f;
     public float laneWidth = 3f;
+    public float playerMoveSpeed;
 
     private float targetXPosition = 0f;
 
     void Start()
     {
         SpawnSoldiers(1); // Spawn initial soldier
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -30,19 +33,19 @@ public class PlayerController : MonoBehaviour
         // Continuous forward movement
         transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
         {
             MoveLeft();
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             MoveRight();
         }
 
         PullSoldiersCloser();
 
-        Vector3 targetPosition = new Vector3(targetXPosition, transform.position.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        //Vector3 targetPosition = new Vector3(targetXPosition, transform.position.y, transform.position.z);
+        //transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
         makeBigSoldiers();
     }
@@ -70,12 +73,12 @@ public class PlayerController : MonoBehaviour
 
     void MoveLeft()
     {
-        targetXPosition -= laneWidth;
+        transform.Translate(Vector3.left * playerMoveSpeed * Time.deltaTime);
     }
 
     void MoveRight()
     {
-        targetXPosition += laneWidth;
+        transform.Translate(Vector3.right * playerMoveSpeed * Time.deltaTime);
     }
 
     public void ModifySoldiers(OperationType operation, int value)

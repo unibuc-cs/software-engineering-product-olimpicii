@@ -7,7 +7,7 @@ public class SoldierShoot : MonoBehaviour
     public GameObject bullet;
     public Transform soldier;
 
-    private float timeBetweenShots = 1f; // 1 secunda
+    public float timeBetweenShots = 1f; // 1 secunda
     private float timeSinceLastShot; // timer
 
     void Update()
@@ -16,6 +16,7 @@ public class SoldierShoot : MonoBehaviour
 
         if (timeSinceLastShot >= timeBetweenShots)
         {
+            Debug.Log("mno");
             Instantiate(bullet, soldier.position, soldier.rotation);
 
             timeSinceLastShot = 0f;
