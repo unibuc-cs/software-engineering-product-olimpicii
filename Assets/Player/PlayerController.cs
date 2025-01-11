@@ -73,12 +73,12 @@ public class PlayerController : MonoBehaviour
 
     void MoveLeft()
     {
-        transform.Translate(Vector3.left * playerMoveSpeed * Time.deltaTime);
+        transform.Translate(Vector3.left * playerMoveSpeed * Time.deltaTime * 0.65f);
     }
 
     void MoveRight()
     {
-        transform.Translate(Vector3.right * playerMoveSpeed * Time.deltaTime);
+        transform.Translate(Vector3.right * playerMoveSpeed * Time.deltaTime * 0.65f);
     }
 
     public void ModifySoldiers(OperationType operation, int value)
