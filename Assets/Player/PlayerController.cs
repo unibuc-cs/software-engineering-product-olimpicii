@@ -42,12 +42,37 @@ public class PlayerController : MonoBehaviour
             MoveRight();
         }
 
+
+        ClampPlayerPosition();
         PullSoldiersCloser();
 
         //Vector3 targetPosition = new Vector3(targetXPosition, transform.position.y, transform.position.z);
         //transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
         makeBigSoldiers();
+    }
+
+    void ClampPlayerPosition()
+    {
+        // Get the player's current position on the X-axis
+        float currentX = transform.position.x;
+
+        // Clamp the player's x position between the defined minX and maxX
+        // However, instead of clamping to the initial values, we will adjust to the extreme values dynamically
+        float clampedX = Mathf.Clamp(currentX, -2.70f, 4f);
+
+        // If the player's position exceeds the X boundaries, snap to the extremity (current maximum or minimum)
+        if (currentX <= -2.70f)
+        {
+            clampedX = -2.70f;
+        }
+        else if (currentX >= 4f)
+        {
+            clampedX = 4f;
+        }
+
+        // Apply the new clamped position to the player's position
+        transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
     }
 
     void makeBigSoldiers()
@@ -119,7 +144,7 @@ public class PlayerController : MonoBehaviour
 
         int gridRows = Mathf.CeilToInt(Mathf.Sqrt(count));
         int gridCols = Mathf.CeilToInt((float)count / gridRows);
-        float spacing = 1.8f;
+        float spacing = Mathf.Max(0.8f, 5f / Mathf.Sqrt(count));
 
         for (int i = 0; i < count; i++)
         {
@@ -129,10 +154,13 @@ public class PlayerController : MonoBehaviour
             Vector3 spawnOffset = new Vector3((col - gridCols / 2f) * spacing, 0, (row - gridRows / 2f) * spacing);
             Vector3 spawnPosition = transform.position + spawnOffset;
 
+            spawnPosition.x = Mathf.Clamp(spawnPosition.x, -2.70f, 4f);
+
 
             GameObject soldier = Instantiate(soldierPrefab, spawnPosition, Quaternion.identity);
             soldiers.Add(soldier);
             soldier.transform.parent = transform;
+
         }
     }
 
@@ -141,7 +169,7 @@ public class PlayerController : MonoBehaviour
 
         int gridRows = Mathf.CeilToInt(Mathf.Sqrt(count));
         int gridCols = Mathf.CeilToInt((float)count / gridRows);
-        float spacing = 1.8f;
+        float spacing = Mathf.Max(0.8f, 5f / Mathf.Sqrt(count));
 
         for (int i = 0; i < count; i++)
         {
@@ -152,6 +180,7 @@ public class PlayerController : MonoBehaviour
             Vector3 spawnPosition = transform.position + spawnOffset;
 
 
+            spawnPosition.x = Mathf.Clamp(spawnPosition.x, -2.70f, 4f);
             GameObject soldier = Instantiate(bigSoldierPrefab, spawnPosition, Quaternion.identity);
             bigSoldiers.Add(soldier);
             soldier.transform.parent = transform;
@@ -161,42 +190,91 @@ public class PlayerController : MonoBehaviour
 
     void PullSoldiersCloser()
     {
-        for (int i = 0; i < soldiers.Count; i++)
-        { 
-            GameObject soldier = soldiers[i];
+        float clampedPlayerX = Mathf.Clamp(transform.position.x, -2.70f, 4f);
+        transform.position = new Vector3(clampedPlayerX, transform.position.y, transform.position.z);
 
-            if (soldier == null)
+        // Calculate the allowed width of the road
+        float maxAllowedWidth = 4f - (-2.70f);
+
+        // Process small soldiers
+        if (soldiers.Count > 0)
+        {
+            float idealSpacing = 0.3f; // Ideal spacing between soldiers
+            float spacing = Mathf.Min(idealSpacing, maxAllowedWidth / Mathf.Max(1, soldiers.Count)); // Dynamically adjust spacing
+
+            float totalWidth = spacing * (soldiers.Count - 1);
+            float centerOffset = -totalWidth / 2f; // Center soldiers closer to the player
+
+            for (int i = 0; i < soldiers.Count; i++)
             {
-                soldiers.RemoveAt(i);
-                i--;
-                continue;
+                GameObject soldier = soldiers[i];
+
+                if (soldier == null)
+                {
+                    soldiers.RemoveAt(i);
+                    i--;
+                    continue;
+                }
+
+                Rigidbody rb = soldier.GetComponent<Rigidbody>();
+
+                // Pull soldier towards the player
+                Vector3 direction = (transform.position - soldier.transform.position).normalized;
+                rb.AddForce(direction * pullStrength, ForceMode.Impulse);
+
+                // Calculate target position with compact spacing
+                float targetX = clampedPlayerX + centerOffset + (i * spacing);
+                float clampedX = Mathf.Clamp(targetX, -2.70f, 4f);
+
+                Vector3 soldierPosition = soldier.transform.position;
+                soldierPosition.x = clampedX;
+                soldier.transform.position = soldierPosition;
             }
-
-            Rigidbody rb = soldier.GetComponent<Rigidbody>();
-
-            Vector3 direction = (transform.position - soldier.transform.position).normalized;
-            rb.AddForce(direction * pullStrength, ForceMode.Impulse);
         }
 
-        for (int i = 0; i < bigSoldiers.Count; i++)
+        // Process big soldiers
+        if (bigSoldiers.Count > 0)
         {
-            GameObject soldier = bigSoldiers[i];
+            float idealSpacing = 0.7f; // Ideal spacing for bigger soldiers
+            float spacing = Mathf.Min(idealSpacing, maxAllowedWidth / Mathf.Max(1, bigSoldiers.Count)); // Dynamically adjust spacing
 
-            if (soldier == null)
+            float totalWidth = spacing * (bigSoldiers.Count - 1);
+            float centerOffset = -totalWidth / 2f; // Center soldiers closer to the player
+
+            for (int i = 0; i < bigSoldiers.Count; i++)
             {
-                bigSoldiers.RemoveAt(i);
-                i--;
-                continue;
+                GameObject soldier = bigSoldiers[i];
+
+                if (soldier == null)
+                {
+                    bigSoldiers.RemoveAt(i);
+                    i--;
+                    continue;
+                }
+
+                Rigidbody rb = soldier.GetComponent<Rigidbody>();
+
+                // Pull soldier towards the player
+                Vector3 direction = (transform.position - soldier.transform.position).normalized;
+                rb.AddForce(direction * pullStrength, ForceMode.Impulse);
+
+                // Calculate target position with compact spacing
+                float targetX = clampedPlayerX + centerOffset + (i * spacing);
+                float clampedX = Mathf.Clamp(targetX, -2.70f, 4f);
+
+                Vector3 soldierPosition = soldier.transform.position;
+                soldierPosition.x = clampedX;
+                soldier.transform.position = soldierPosition;
             }
-
-            Rigidbody rb = soldier.GetComponent<Rigidbody>();
-
-            Vector3 direction = (transform.position - soldier.transform.position).normalized;
-            rb.AddForce(direction * pullStrength, ForceMode.Impulse);
         }
     }
 
-   
+
+
+
+
+
+
 
     public void RemoveSoldiers(int count)
     {
