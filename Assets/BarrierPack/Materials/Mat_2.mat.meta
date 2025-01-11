@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9280ef10bff549b42aafecc42b9a3a8c
+timeCreated: 1484261284
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 80401
+  packageName: Concrete Barricades
+  packageVersion: 1.0
+  assetPath: Assets/BarrierPack/Materials/Mat_2.mat
+  uploadId: 155900
