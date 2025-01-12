@@ -6,46 +6,39 @@ using UnityEngine;
 public class PlatformManager : MonoBehaviour
 {
     public GameObject platformPrefab;
-    public List<GameObject> gatePrefabs;
+    public List<GameObject> checkpointGatePrefabs; // Checkpoint gate prefabs
+    public GameObject shootableGatePrefab;        // Shootable gate prefab
     public int platformLength = 20;
     public int initialPlatformCount = 5;
     public int gateDistanceToPlayer;
     public Transform playerTransform;
     public Transform gateContainer;
-    public float gateSpacing = 40f; 
-    
+    public float gateSpacing = 50f;
 
     private Queue<GameObject> activePlatforms = new Queue<GameObject>();
-    private float spawnZ = 0f;
-    private float safeZone = 30f;
     private int platformsSpawned;
     private int gatesSpawned;
+    private int shootableGateCounter = 0;        
 
-    
+    private int shootableGateHealth = 5;         
+    private float healthScalingFactor = 5;
     private EnemyController enemyControllerScript;
-    private float nextGateZ = 0f; 
+
     void Start()
     {
-        nextGateZ = gateSpacing;
-        gatesSpawned = 0;
-        Transform enemyController = GameObject.Find("enemySpawnPoint").transform;
-        enemyControllerScript = enemyController.GetComponent<EnemyController>();
-
-
         for (int i = 0; i < initialPlatformCount; i++)
         {
             SpawnPlatform();
         }
-
     }
 
     void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             enemyControllerScript.SpawnEnemies(10);
         }
-
         if (playerTransform.position.z > platformsSpawned * platformLength)
         {
             platformsSpawned++;
@@ -56,29 +49,31 @@ public class PlatformManager : MonoBehaviour
         if (playerTransform.position.z > gatesSpawned * gateSpacing)
         {
             gatesSpawned++;
-            GameObject newPlatform = Instantiate(platformPrefab, Vector3.forward * spawnZ, Quaternion.identity);
-            activePlatforms.Enqueue(newPlatform);
-            SpawnGate();
+
+            if (shootableGateCounter % 2 == 0)
+            {
+                SpawnShootableGate();
+            }
+            else
+            {
+                SpawnCheckpointGate();
+            }
+            shootableGateCounter++;
         }
-
-
     }
 
     void SpawnPlatform()
     {
-        GameObject newPlatform = Instantiate(platformPrefab, Vector3.forward * platformLength * (platformsSpawned + 1) , Quaternion.identity);
+        Vector3 platformPosition = Vector3.forward * platformLength * platformsSpawned;
+        GameObject newPlatform = Instantiate(platformPrefab, platformPosition, Quaternion.identity);
         activePlatforms.Enqueue(newPlatform);
-        platformsSpawned++;
     }
 
-    void SpawnGate()
+    void SpawnCheckpointGate()
     {
-        if (gatePrefabs.Count > 0)
+        if (checkpointGatePrefabs.Count > 0)
         {
-
-            GameObject selectedGate = gatePrefabs[UnityEngine.Random.Range(0, gatePrefabs.Count)];
-
-
+            GameObject selectedGate = checkpointGatePrefabs[UnityEngine.Random.Range(0, checkpointGatePrefabs.Count)];
             Vector3 gatePosition = new Vector3(0f, 0f, gateDistanceToPlayer + playerTransform.position.z);
             Quaternion gateRotation = Quaternion.Euler(0, 180, 0);
 
@@ -88,20 +83,39 @@ public class PlatformManager : MonoBehaviour
             CheckpointGate gateScript = gateInstance.GetComponent<CheckpointGate>();
             if (gateScript != null)
             {
-                OperationType option1Op, option2Op;
-                int option1Val, option2Val;
-
+              
+                OperationType op1, op2;
+                int val1, val2;
                 do
                 {
-                    option1Op = GetRandomOperation();
-                    option1Val = UnityEngine.Random.Range(1, 10);
+                    op1 = GetRandomOperation();
+                    val1 = UnityEngine.Random.Range(2, 7);
 
-                    option2Op = GetRandomOperation();
-                    option2Val = UnityEngine.Random.Range(1, 10);
+                    op2 = GetRandomOperation();
+                    val2 = UnityEngine.Random.Range(2, 7);
                 }
-                while (!AreChoicesBalanced(option1Op, option1Val, option2Op, option2Val));
+                while (!AreChoicesBalanced(op1, val1, op2, val2));
 
-                gateScript.ConfigureGate(option1Op, option1Val, option2Op, option2Val);
+                gateScript.ConfigureGate(op1, val1, op2, val2);
+            }
+        }
+    }
+
+    void SpawnShootableGate()
+    {
+        if (shootableGatePrefab != null)
+        {
+            Vector3 gatePosition = new Vector3(-4f, 0f, gateDistanceToPlayer + playerTransform.position.z);
+            Quaternion gateRotation = Quaternion.Euler(270, 0, 0);
+
+            GameObject shootableGate = Instantiate(shootableGatePrefab, gatePosition, gateRotation, gateContainer);
+            shootableGate.transform.localScale = new Vector3(3.8f, 4f, 4f); 
+
+            ShootableGate shootableGateScript = shootableGate.GetComponent<ShootableGate>();
+            if (shootableGateScript != null)
+            {
+                shootableGateScript.health = shootableGateHealth;
+                shootableGateHealth = Mathf.RoundToInt(shootableGateHealth + healthScalingFactor); 
             }
         }
     }
@@ -110,6 +124,7 @@ public class PlatformManager : MonoBehaviour
     {
         GameObject oldPlatform = activePlatforms.Dequeue();
 
+      
         foreach (Transform child in gateContainer)
         {
             if (child.position.z < oldPlatform.transform.position.z)
@@ -129,11 +144,12 @@ public class PlatformManager : MonoBehaviour
 
     private bool AreChoicesBalanced(OperationType op1, int val1, OperationType op2, int val2)
     {
+        
         if (op1 == op2 && val1 == val2) return false;
+        if (op1 == op2 ) return false;
         if (op1 == OperationType.Multiply && op2 == OperationType.Add && val1 > 3 && val2 < 10) return false;
         if (op1 == OperationType.Add && op2 == OperationType.Multiply && val2 > 3 && val1 < 10) return false;
         if (op1 == OperationType.Subtract && op2 == OperationType.Add && val1 > -val2) return false;
-
         return true;
     }
 }
