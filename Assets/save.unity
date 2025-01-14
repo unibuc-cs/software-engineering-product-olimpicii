@@ -889,7 +889,7 @@ MonoBehaviour:
   pullStrength: 0.03
   bigToSmallSoldierRatio: 10
   soldierPrefab: {fileID: 4119222105521057299, guid: d18c4ae7ef3f57448b7037e056bca463, type: 3}
-  bigSoldierPrefab: {fileID: 4119222105521057299, guid: 01d3226c602ad9b4aa577db558ae504c, type: 3}
+  bigSoldierPrefab: {fileID: 4119222105521057299, guid: 66c999b39eac23d41b820b12b8673faf, type: 3}
   moveSpeed: 20
   forwardSpeed: 10
   laneWidth: 3
