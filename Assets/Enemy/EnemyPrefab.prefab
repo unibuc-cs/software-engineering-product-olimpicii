@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySpeed: 4
-  pullStrength: 0.06
+  pullStrength: 0.057
 --- !u!1001 &4141537993149417328
 PrefabInstance:
   m_ObjectHideFlags: 0
