@@ -4,43 +4,46 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject gameOverPanel;  
     public GameObject pauseMenuPanel;  
-    public Text soldiersLeftText;      // Text showing soldiers left
-    public PlayerController playerController;  // Reference to PlayerController script
+    public Text soldiersLeftText;      
+    public PlayerController playerController;  
 
     private bool isPaused = false;
 
     void Start()
     {
-        gameOverPanel.SetActive(false);
+        
         pauseMenuPanel.SetActive(false);
     }
 
     void Update()
     {
-        // Escape key to toggle pause
+       
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePause();
         }
     }
 
-    // This method is called from the PlayerController when soldiers are 0
     public void EndGame()
     {
-        gameOverPanel.SetActive(true);
-        Time.timeScale = 0f;  // Pause the game
+        pauseMenuPanel.SetActive(true);
+        Time.timeScale = 0f;  
     }
 
-    // Function to restart the game (reload the scene)
+
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Reload current scene
-        Time.timeScale = 1f;  // Unpause the game
+        
+        Time.timeScale = 1f;
+        playerController.ResetGame();
+        Debug.Log("Restarting the game... Time Scale: " + Time.timeScale);
+        pauseMenuPanel.SetActive(false); 
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);  
+      
     }
 
-    // Function to exit the game
+    
     public void ExitGame()
     {
         Application.Quit(); // Exit the game

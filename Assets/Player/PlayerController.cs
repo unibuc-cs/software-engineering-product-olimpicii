@@ -32,6 +32,17 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         UpdateScoreTable();
     }
+    public void ResetGame()
+    {
+        // Reset all variables and states as needed
+        soldiers.Clear();  // Clear soldier list
+        bigSoldiers.Clear();  // Clear big soldier list
+        transform.position = Vector3.zero;  // Reset player position (or wherever you'd like)
+                                            // Reset any other player stats like health, score, etc.
+
+        // Optionally, spawn initial soldiers
+        SpawnSoldiers(1);  // Re-spawn soldiers after restart
+    }
 
     private void UpdateScoreTable()
     {
