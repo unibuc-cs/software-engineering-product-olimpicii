@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour
         
 
         makeBigSoldiers();
+        UpdateScoreTable();
     }
 
     void ClampPlayerPosition()
@@ -116,7 +117,7 @@ public class PlayerController : MonoBehaviour
 
     public void ModifySoldiers(OperationType operation, int value)
     {
-        int currentCount = soldiers.Count;
+        int currentCount = soldiers.Count + bigSoldiers.Count * bigToSmallSoldierRatio;
 
         int newSoldierCount = currentCount;
 
@@ -170,7 +171,6 @@ public class PlayerController : MonoBehaviour
             soldier.transform.parent = transform;
 
         }
-        UpdateScoreTable();
     }
 
     void SpawnBigSoldiers(int count)  // cam pucheala codu aici dar ar dura mai mult sa l fac sa accepte orice tip ca ar trb sa fac un hashmap cu liste sau n am alta idee :(
@@ -287,12 +287,25 @@ public class PlayerController : MonoBehaviour
 
     public void RemoveSoldiers(int count)
     {
+        while (bigSoldiers.Count > 0 && count > 0)
+        {
+            Destroy(bigSoldiers[bigSoldiers.Count - 1]);
+            bigSoldiers.RemoveAt(bigSoldiers.Count - 1);
+
+            count -= bigToSmallSoldierRatio;
+        }
+
+        if (count < 0)
+        {
+            SpawnSoldiers(-count);
+            return;
+        }
+
         for (int i = 0; i < count && soldiers.Count > 0; i++)
         {
             GameObject soldierToRemove = soldiers[soldiers.Count - 1];
             soldiers.Remove(soldierToRemove);
             Destroy(soldierToRemove);
         }
-        UpdateScoreTable();
     }
 }

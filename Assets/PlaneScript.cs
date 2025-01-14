@@ -22,10 +22,16 @@ public class PlatformManager : MonoBehaviour
 
     private int shootableGateHealth = 5;         
     private float healthScalingFactor = 5;
+    private int enemyScalingFactor = 5;
     private EnemyController enemyControllerScript;
+
+    private int whatToSpawn = 0;
 
     void Start()
     {
+        Transform enemyController = GameObject.Find("enemySpawnPoint").transform;
+        enemyControllerScript = enemyController.GetComponent<EnemyController>();
+
         for (int i = 0; i < initialPlatformCount; i++)
         {
             SpawnPlatform();
@@ -34,11 +40,6 @@ public class PlatformManager : MonoBehaviour
 
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            enemyControllerScript.SpawnEnemies(10);
-        }
         if (playerTransform.position.z > platformsSpawned * platformLength)
         {
             platformsSpawned++;
@@ -48,19 +49,32 @@ public class PlatformManager : MonoBehaviour
 
         if (playerTransform.position.z > gatesSpawned * gateSpacing)
         {
-            gatesSpawned++;
+            whatToSpawn++;
 
-            if (shootableGateCounter % 2 == 0)
+            switch (whatToSpawn)
             {
-                SpawnShootableGate();
+                case 1:
+                    SpawnCheckpointGate(); break;
+                case 2:
+                    SpawnShootableGate(); break;
+                case 3:
+                    SpawnCheckpointGate(); break;
+                case 4:
+                    SpawnEnemies(); break;
+                default:
+                    whatToSpawn = 0; break;
             }
-            else
-            {
-                SpawnCheckpointGate();
-            }
-            shootableGateCounter++;
+
+            gatesSpawned++;
         }
     }
+
+    void SpawnEnemies()
+    {
+        enemyControllerScript.SpawnEnemies(enemyScalingFactor + 5);
+        enemyScalingFactor += 5;
+    }
+    
 
     void SpawnPlatform()
     {

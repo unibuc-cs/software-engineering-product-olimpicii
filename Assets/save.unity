@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 2bd8959f5fbd3644aa33af1a155fc147, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -411,7 +411,7 @@ Transform:
   m_GameObject: {fileID: 279794582}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.06, y: 0.71, z: 39}
+  m_LocalPosition: {x: -0.06, y: 0.71, z: 73.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -430,8 +430,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pullStrength: 0.04
-  distanceToPlayer: 0
-  sleep: 1
   enemyPrefab: {fileID: 4119222105521057299, guid: fbd7d79492fa7fd4fb8feaf388722b67, type: 3}
   player: {fileID: 1270568417}
 --- !u!1 &469819379
@@ -868,6 +866,7 @@ GameObject:
   - component: {fileID: 1270568418}
   - component: {fileID: 1270568420}
   - component: {fileID: 1270568421}
+  - component: {fileID: 1270568422}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -960,6 +959,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1270568422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270568417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1a9a17905865fd4eb90105cfecf9fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pullStrength: 0.03
+  enemyPrefab: {fileID: 4119222105521057299, guid: fbd7d79492fa7fd4fb8feaf388722b67, type: 3}
+  player: {fileID: 1270568417}
 --- !u!1 &1538649888
 GameObject:
   m_ObjectHideFlags: 0

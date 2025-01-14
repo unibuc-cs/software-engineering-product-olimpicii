@@ -108,7 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 4110830987376507786, guid: f3707f936cd734f4d985fdd823a42c92, type: 3}
   soldier: {fileID: 6783983972438948803}
-  timeBetweenShots: 1
+  timeBetweenShots: 0.2
 --- !u!1001 &4775408228240167447
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -169,6 +169,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: a2d0fd5b97b735049a3478da7432a5ad, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 1b1595a3eddd7394f8dff33a9b282ac0, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

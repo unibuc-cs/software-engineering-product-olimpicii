@@ -5,8 +5,6 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public float pullStrength;
-    public float distanceToPlayer;
-    public bool sleep = true;
     public GameObject enemyPrefab;
     public GameObject player;
     private List<GameObject> enemies = new List<GameObject>();
@@ -24,12 +22,12 @@ public class EnemyController : MonoBehaviour
     {
         int gridRows = Mathf.CeilToInt(Mathf.Sqrt(count));
         int gridCols = Mathf.CeilToInt((float)count / gridRows);
-        float spacing = 1.8f;
 
         for (int i = 0; i < count; i++)
         {
             int row = i / gridCols;
             int col = i % gridCols;
+            float spacing = Mathf.Max(0.8f, 5f / Mathf.Sqrt(count)) / 1.2f;
 
             Vector3 spawnOffset = new Vector3((col - gridCols / 2f) * spacing, 0, (row - gridRows / 2f) * spacing);
             Vector3 spawnPosition = transform.position + spawnOffset;
@@ -44,7 +42,7 @@ public class EnemyController : MonoBehaviour
 
     private void PullEnemiesToPlayer()
     {
-        sleep = false;
+        Debug.Log("dam pe afara");
         for (int i = 0; i <= enemies.Count - 1; i++)
         {
             if (enemies[i] == null)
@@ -58,7 +56,7 @@ public class EnemyController : MonoBehaviour
             Rigidbody rb = enemy.GetComponent<Rigidbody>();
 
             Vector3 direction = (player.transform.position - rb.position).normalized;
-            rb.AddForce(direction * pullStrength, ForceMode.Impulse);
+            rb.transform.Translate(direction * pullStrength);
         }
         
     }
