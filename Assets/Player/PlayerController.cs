@@ -8,6 +8,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameManager gameManager;
+
+
     public float pullStrength;
     public int bigToSmallSoldierRatio;
 
@@ -56,7 +59,10 @@ public class PlayerController : MonoBehaviour
         ClampPlayerPosition();
         PullSoldiersCloser();
 
-        
+        if (soldiers.Count == 0 && bigSoldiers.Count == 0)
+        {
+            gameManager.EndGame();  
+        }
 
         makeBigSoldiers();
         UpdateScoreTable();
