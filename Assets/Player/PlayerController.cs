@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public float forwardSpeed = 10f;
     public float laneWidth = 3f;
     public float playerMoveSpeed;
+    private int frameCounter = 0; 
 
     private float targetXPosition = 0f;
 
@@ -42,13 +43,15 @@ public class PlayerController : MonoBehaviour
 
         // Optionally, spawn initial soldiers
         SpawnSoldiers(1);  // Re-spawn soldiers after restart
+        ScoreManager.Instance.ResetUI(); // Reassign the scoreText reference
+        ScoreManager.Instance.ResetScore();
     }
 
     private void UpdateScoreTable()
     {
-        if (ScoreManager.Instance != null)
+        if (ScoreManager.Instance != null && (soldiers.Count > 0 || bigSoldiers.Count > 0))
         {
-            ScoreManager.Instance.UpdateScore(soldiers.Count + bigSoldiers.Count);
+            ScoreManager.Instance.AddToScore(3); // Add 1 to the score only if there are soldiers left
         }
     }
 
@@ -76,7 +79,13 @@ public class PlayerController : MonoBehaviour
         }
 
         makeBigSoldiers();
-        UpdateScoreTable();
+
+        frameCounter++;
+
+        if (frameCounter % 10 == 0)
+        {
+            UpdateScoreTable();
+        }
     }
 
     void ClampPlayerPosition()
