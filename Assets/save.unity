@@ -1351,7 +1351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a9a17905865fd4eb90105cfecf9fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pullStrength: 0.03
+  pullStrength: 0.05
   enemyPrefab: {fileID: 4119222105521057299, guid: fbd7d79492fa7fd4fb8feaf388722b67, type: 3}
   player: {fileID: 1270568417}
 --- !u!1 &1372148948

@@ -6,6 +6,7 @@ public class EnemyBehaviour : MonoBehaviour
     public float enemySpeed = 1f;
     public float pullStrength = 0.06f;
     private Rigidbody rb;
+    private float stopDistance = 0f;
 
     void Start()
     {
@@ -36,13 +37,17 @@ public class EnemyBehaviour : MonoBehaviour
 
     void PullToPlayer()
     {
-        Vector3 direction = (player.transform.position - rb.position).normalized;
-        rb.AddForce(direction * pullStrength, ForceMode.Impulse);
+        Vector3 direction = (player.transform.position - rb.position - new Vector3(0f,0f,3f)).normalized;
+        float distance = Vector3.Distance(player.transform.position, rb.position);
+        if(distance > stopDistance)
+            rb.AddForce(direction * pullStrength, ForceMode.Impulse);
     }
 
     void MoveForward()
     {
-        rb.AddForce(new Vector3(0f, 0f, enemySpeed));
+        float distancec = Vector3.Distance(player.transform.position, rb.position);
+        if(distancec > stopDistance)
+            rb.AddForce(new Vector3(0f, 0f, enemySpeed));
     }
 
     private void OnCollisionEnter(Collision collision)
