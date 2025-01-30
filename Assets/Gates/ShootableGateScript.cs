@@ -6,6 +6,8 @@ public class ShootableGate : MonoBehaviour
     public int health = 10;
     public GameObject destructionEffect;
     public TextMeshPro healthText;
+    public delegate void OnDestroyed();
+    public event OnDestroyed onDestroyed; 
 
     void Start()
     {
@@ -42,7 +44,7 @@ public class ShootableGate : MonoBehaviour
         {
             Instantiate(destructionEffect, transform.position, Quaternion.identity);
         }
-
+        onDestroyed?.Invoke();
         Destroy(gameObject);
     }
 

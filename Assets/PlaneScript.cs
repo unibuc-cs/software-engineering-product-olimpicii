@@ -8,6 +8,7 @@ public class PlatformManager : MonoBehaviour
     public GameObject platformPrefab;
     public List<GameObject> checkpointGatePrefabs; // Checkpoint gate prefabs
     public GameObject shootableGatePrefab;        // Shootable gate prefab
+    public GameObject dualCheckpointPrefab;       //dual gate
     public int platformLength = 20;
     public int initialPlatformCount = 5;
     public int gateDistanceToPlayer;
@@ -58,7 +59,7 @@ public class PlatformManager : MonoBehaviour
                 case 2:
                     SpawnShootableGate(); break;
                 case 3:
-                    SpawnCheckpointGate(); break;
+                    SpawnDualCheckpointGate(); break;
                 case 4:
                     SpawnEnemies(); break;
                 default:
@@ -166,4 +167,24 @@ public class PlatformManager : MonoBehaviour
         if (op1 == OperationType.Subtract && op2 == OperationType.Add && val1 > -val2) return false;
         return true;
     }
+
+    void SpawnDualCheckpointGate()
+    {
+        if (dualCheckpointPrefab != null)
+        {
+            Vector3 gatePosition = new Vector3(0f, 0f, gateDistanceToPlayer + playerTransform.position.z);
+            Quaternion gateRotation = Quaternion.Euler(0, 180, 0);
+
+
+            GameObject dualGateInstance = Instantiate(dualCheckpointPrefab, gatePosition, gateRotation, gateContainer);
+            dualGateInstance.transform.localScale = Vector3.one;
+
+            DualCheckpointGate dualGateScript = dualGateInstance.GetComponent<DualCheckpointGate>();
+            if (dualGateScript != null)
+            {
+                dualGateScript.ConfigureGate(gatesSpawned);
+            }
+        }
+    }
+
 }
