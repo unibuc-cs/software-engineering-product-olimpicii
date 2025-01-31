@@ -23,7 +23,8 @@ public class PlayerController : MonoBehaviour
     public float forwardSpeed = 10f;
     public float laneWidth = 3f;
     public float playerMoveSpeed;
-    private int frameCounter = 0; 
+    private int frameCounter = 0;
+    private bool isPaused = false;
 
     private float targetXPosition = 0f;
 
@@ -49,9 +50,9 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateScoreTable()
     {
-        if (ScoreManager.Instance != null && (soldiers.Count > 0 || bigSoldiers.Count > 0))
+        if (isPaused== false && ScoreManager.Instance != null && (soldiers.Count > 0 || bigSoldiers.Count > 0))
         {
-            ScoreManager.Instance.AddToScore(3); // Add 1 to the score only if there are soldiers left
+            ScoreManager.Instance.AddToScore(1); // Add 1 to the score only if there are soldiers left
         }
     }
 
@@ -68,7 +69,7 @@ public class PlayerController : MonoBehaviour
         {
             MoveRight();
         }
-
+        isPaused = gameManager.IsPaused();
 
         ClampPlayerPosition();
         PullSoldiersCloser();
@@ -82,9 +83,11 @@ public class PlayerController : MonoBehaviour
 
         frameCounter++;
 
+
         if (frameCounter % 10 == 0)
         {
             UpdateScoreTable();
+            
         }
     }
 

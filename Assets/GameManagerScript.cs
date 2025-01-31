@@ -31,7 +31,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;  
     }
 
-
+    public bool IsPaused()
+    { return isPaused; }
     public void RestartGame()
     {
         
@@ -42,7 +43,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);  
       
     }
-
+    
     
     public void ExitGame()
     {

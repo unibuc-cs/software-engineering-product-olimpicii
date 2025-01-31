@@ -7,9 +7,11 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance { get; private set; }
 
     private int score = 0;
+    private int highscore = 0;
 
     [Header("UI Settings")]
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI highscoreText;
 
     private void Awake()
     {
@@ -22,6 +24,7 @@ public class ScoreManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        LoadHighscore();
     }
 
     private void OnEnable()
@@ -50,6 +53,13 @@ public class ScoreManager : MonoBehaviour
         {
             scoreText.text = "Score: " + score;
         }
+
+        if (score > highscore)
+        {
+            highscore = score;
+            SaveHighscore();
+            UpdateHighscore(highscore);
+        }
     }
 
     public void AddToScore(int value)
@@ -75,6 +85,10 @@ public class ScoreManager : MonoBehaviour
         {
             scoreText = GameObject.Find("Text")?.GetComponent<TextMeshProUGUI>();
         }
+        if(highscoreText == null)
+        {
+            highscoreText = GameObject.Find("highscoreText")?.GetComponent<TextMeshProUGUI>();
+        }
 
         // Ensure the Text object is active and updated
         if (scoreText != null)
@@ -86,5 +100,41 @@ public class ScoreManager : MonoBehaviour
         {
             Debug.LogError("Text object not found in the scene!");
         }
+        if (highscoreText != null)
+        {
+            highscoreText.gameObject.SetActive(true);
+            UpdateHighscore(highscore); 
+        }
+        else
+        {
+            Debug.LogError("Text object not found in the scene!");
+        }
     }
+
+    private void LoadHighscore()
+    {
+        highscore = PlayerPrefs.GetInt("Highscore", 0);
+    }
+
+    private void SaveHighscore()
+    {
+        PlayerPrefs.SetInt("Highscore", highscore);
+        PlayerPrefs.Save();
+    }
+
+    private void UpdateHighscore(int val)
+    {
+        if(highscoreText != null)
+        {
+            LoadHighscore();
+            highscoreText.text = "Highscore: " + highscore;
+        }
+    }
+
+
+
+
+
+
+
 }
