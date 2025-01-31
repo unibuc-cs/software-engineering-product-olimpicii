@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour
     public GameObject soldierPrefab;
     public GameObject bigSoldierPrefab;
     private Rigidbody rb;
-    private List<GameObject> soldiers = new List<GameObject>();
-    private List<GameObject> bigSoldiers = new List<GameObject>();
+    public List<GameObject> soldiers = new List<GameObject>();
+    public List<GameObject> bigSoldiers = new List<GameObject>();
     public float moveSpeed = 5f;
     public float forwardSpeed = 10f;
     public float laneWidth = 3f;
@@ -43,8 +43,8 @@ public class PlayerController : MonoBehaviour
                                             // Reset any other player stats like health, score, etc.
 
         // Optionally, spawn initial soldiers
-        SpawnSoldiers(1);  // Re-spawn soldiers after restart
-        ScoreManager.Instance.ResetUI(); // Reassign the scoreText reference
+        SpawnSoldiers(1);  
+        ScoreManager.Instance.ResetUI();
         ScoreManager.Instance.ResetScore();
     }
 
@@ -52,13 +52,13 @@ public class PlayerController : MonoBehaviour
     {
         if (isPaused== false && ScoreManager.Instance != null && (soldiers.Count > 0 || bigSoldiers.Count > 0))
         {
-            ScoreManager.Instance.AddToScore(1); // Add 1 to the score only if there are soldiers left
+            ScoreManager.Instance.AddToScore(1); 
         }
     }
 
     void Update()
     {
-        // Continuous forward movement
+    
         transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.A))
@@ -96,10 +96,10 @@ public class PlayerController : MonoBehaviour
         
         float currentX = transform.position.x;
 
-        // Clamp the player's x position 
+       
         float clampedX = Mathf.Clamp(currentX, -2.70f, 4f);
 
-        // If the player's position exceeds the X boundaries
+        
         if (currentX <= -2.70f)
         {
             clampedX = -2.70f;
@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void SpawnSoldiers(int count)
+    public void SpawnSoldiers(int count)
     {
 
         int gridRows = Mathf.CeilToInt(Mathf.Sqrt(count));
