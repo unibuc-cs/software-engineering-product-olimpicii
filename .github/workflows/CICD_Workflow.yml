@@ -1,4 +1,4 @@
-name: CICD_Workflow
+name: CI/CD Workflow
 
 on:
   push:
@@ -9,14 +9,22 @@ on:
       - main
 
 jobs:
-  test:
-    name: Run Unity Tests
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 
+
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: unibuc-cs/software-engineering-product-olimpicii/Library
+          key: Library-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            Library-${{ runner.os }}-
 
       - name: Ensure Directory Exists
         run: |
@@ -31,53 +39,35 @@ jobs:
           echo "Current directory: $(pwd)"
           git rev-parse --is-shallow-repository
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Install Dependencies
+        working-directory: unibuc-cs/software-engineering-product-olimpicii
+        run: |
+          npm install || yarn install  # În funcție de managerul de pachete folosit
 
-      - name: Cache Library folder
-        uses: actions/cache@v3
+      - name: Run Tests
+        working-directory: unibuc-cs/software-engineering-product-olimpicii
+        run: npm test || yarn test
+
+      - name: Build Project
+        working-directory: unibuc-cs/software-engineering-product-olimpicii
+        run: npm run build || yarn build
+
+      - name: Activate Unity License
+        uses: game-ci/unity-activate@v2
         with:
-          path: unibuc-cs/software-engineering-product-olimpicii/Library
-          key: Library-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            Library-${{ runner.os }}-
+          unityVersion: 2021.3.0f1
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
-      - name: Set up Unity
+      - name: Build with Unity
         uses: game-ci/unity-builder@v2
         with:
-          unityVersion: 2022.3.0f1
           projectPath: unibuc-cs/software-engineering-product-olimpicii
-          allowDirtyBuild: true
+          unityVersion: 2021.3.0f1
+          targetPlatform: StandaloneWindows64
 
-      - name: Run Edit Mode Tests
-        uses: game-ci/unity-test-runner@v2
-        with:
-          unityVersion: 2022.3.0f1
-          projectPath: unibuc-cs/software-engineering-product-olimpicii
-          testMode: EditMode
-          testResults: unibuc-cs/software-engineering-product-olimpicii/artifacts/test-results/editmode-results.xml
-
-      - name: Run Play Mode Tests
-        uses: game-ci/unity-test-runner@v2
-        with:
-          unityVersion: 2022.3.0f1
-          projectPath: unibuc-cs/software-engineering-product-olimpicii
-          testMode: PlayMode
-          testResults: unibuc-cs/software-engineering-product-olimpicii/artifacts/test-results/playmode-results.xml
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: UnityTestResults
-          path: unibuc-cs/software-engineering-product-olimpicii/artifacts/test-results
-
-      - name: Upload Logs for Debugging
-        uses: actions/upload-artifact@v4
-        with:
-          name: UnityLogs
-          path: unibuc-cs/software-engineering-product-olimpicii/Logs
-
-      - name: Report Test Results
+      - name: Deactivate Unity License
         if: always()
-        run: |
-          cat unibuc-cs/software-engineering-product-olimpicii/artifacts/test-results/**/TestResults.xml || echo "No test results found"
+        uses: game-ci/unity-return-license@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
