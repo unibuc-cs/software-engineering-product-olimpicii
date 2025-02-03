@@ -18,7 +18,7 @@ jobs:
       - uses: docker/setup-buildx-action@v1
 
       - name: build Docker image
-      - run: docker build -t my-imagee 
+      - run: docker build -t my-image -f actions-runner/Dockerfile actions-runner/
 
       - name: Run Docker container
       - run: docker run my-image .
