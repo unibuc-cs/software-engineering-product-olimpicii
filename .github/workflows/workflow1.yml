@@ -21,6 +21,9 @@ jobs:
           restore-keys: |
             Library-
 
+      - name: Bump version using standard-version
+        run: |
+          npx standard-version --no-verify
       # Test
       - name: Run tests
         uses: game-ci/unity-test-runner@v4
@@ -30,7 +33,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-
+  
       # Build
       - name: Build project
         uses: game-ci/unity-builder@v4
