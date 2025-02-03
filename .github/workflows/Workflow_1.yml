@@ -1,9 +1,0 @@
-name: Workflow_1
-on : workflow_dispatch
-jobs :
-  init_job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print Greetings
-        run: echo "Workflow init"
-  

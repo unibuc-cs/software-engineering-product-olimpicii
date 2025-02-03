@@ -1,0 +1,65 @@
+name: CICD_Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run Unity Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache Library folder
+        uses: actions/cache@v3
+        with:
+          path: MathRunner/Library
+          key: Library-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            Library-${{ runner.os }}-
+
+      - name: Set up Unity
+        uses: game-ci/unity-builder@v2
+        with:
+          unityVersion: 2022.3.0f1
+          projectPath: MathRunner
+          allowDirtyBuild: true
+
+      - name: Run Edit Mode Tests
+        uses: game-ci/unity-test-runner@v2
+        with:
+          unityVersion: 2022.3.0f1
+          projectPath: MathRunner
+          testMode: EditMode
+          testResults: MathRunner/artifacts/test-results/editmode-results.xml
+
+      - name: Run Play Mode Tests
+        uses: game-ci/unity-test-runner@v2
+        with:
+          unityVersion: 2022.3.0f1
+          projectPath: MathRunner
+          testMode: PlayMode
+          testResults: MathRunner/artifacts/test-results/playmode-results.xml
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: UnityTestResults
+          path: MathRunner/artifacts/test-results
+
+      - name: Upload Logs for Debugging
+        uses: actions/upload-artifact@v4
+        with:
+          name: UnityLogs
+          path: MathRunner/Logs
+
+      - name: Report Test Results
+        if: always()
+        run: |
+          cat MathRunner/artifacts/test-results/**/TestResults.xml || echo "No test results found"
