@@ -7,21 +7,20 @@ jobs:
     name: Build my project ✨
     runs-on: [self-hosted, windows]
     steps:
-      # Checkout the repository
+      # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           lfs: true
 
-      # Cache dependencies to speed up builds
+      # Cache
       - uses: actions/cache@v3
         with:
           path: Library
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-
-
-      # Run tests using Unity Test Runner
+      # Test
       - name: Run tests
         uses: game-ci/unity-test-runner@v4
         env:
@@ -31,27 +30,18 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build the Unity project for Android
-      - name: Build project for Android
+      # Build
+      - name: Build project
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: Android
+          targetPlatform: WebGL
           allowDirtyBuild: true
 
-      #
-      - name: Build Docker image for local runner
-        run: |
-          docker build -t my-app:${{ github.sha }} C:/actions-runner/_work
-        working-directory: C:/actions-runner/_work
-        env:
-          DOCKER_BUILDKIT: 1
-          DOCKER_CLI_EXPERIMENTAL: enabled
-
-      # Output the build artifacts
+      # Output
       - uses: actions/upload-artifact@v4
         with:
           name: Build
