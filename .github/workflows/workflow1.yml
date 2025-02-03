@@ -13,17 +13,6 @@ jobs:
         with:
           lfs: true
 
-      # Docker setup 
-      - name: Docker setup
-        uses: docker/setup-buildx-action@v1
-
-      # Build Docker image
-      - name: Build Docker image
-        run: docker build -t my-image -f actions-runner/Dockerfile actions-runner/
-
-      # Run Docker container
-      - name: Run Docker container
-        run: docker run my-image .
       
       # Cache
       - uses: actions/cache@v3
