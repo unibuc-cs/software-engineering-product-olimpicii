@@ -13,6 +13,24 @@ jobs:
     name: Run Unity Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 
+
+      - name: Ensure Directory Exists
+        run: |
+          if [ ! -d "unibuc-cs/software-engineering-product-olimpicii" ]; then
+            echo "Directory does not exist. Cloning repository..."
+            git clone https://github.com/unibuc-cs/software-engineering-product-olimpicii.git unibuc-cs/software-engineering-product-olimpicii
+          fi
+
+      - name: Navigate to Project Directory
+        working-directory: unibuc-cs/software-engineering-product-olimpicii
+        run: |
+          echo "Current directory: $(pwd)"
+          git rev-parse --is-shallow-repository
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
