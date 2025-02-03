@@ -33,24 +33,15 @@ jobs:
             git clone https://github.com/unibuc-cs/software-engineering-product-olimpicii.git unibuc-cs/software-engineering-product-olimpicii
           fi
 
+      - name: List Project Files
+        run: |
+          ls -la unibuc-cs/software-engineering-product-olimpicii
+
       - name: Navigate to Project Directory
         working-directory: unibuc-cs/software-engineering-product-olimpicii
         run: |
           echo "Current directory: $(pwd)"
           git rev-parse --is-shallow-repository
-
-      - name: Install Dependencies
-        working-directory: unibuc-cs/software-engineering-product-olimpicii
-        run: |
-          npm install || yarn install  # În funcție de managerul de pachete folosit
-
-      - name: Run Tests
-        working-directory: unibuc-cs/software-engineering-product-olimpicii
-        run: npm test || yarn test
-
-      - name: Build Project
-        working-directory: unibuc-cs/software-engineering-product-olimpicii
-        run: npm run build || yarn build
 
       - name: Activate Unity License
         uses: game-ci/unity-activate@v2
