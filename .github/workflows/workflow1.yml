@@ -9,8 +9,8 @@ jobs:
     steps:
       # Checkout
       - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
+      - uses: actions/checkout@v4
+      - with:
           lfs: true
 
 
