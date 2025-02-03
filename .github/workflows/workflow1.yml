@@ -13,7 +13,6 @@ jobs:
         with:
           lfs: true
 
-      
       # Cache
       - uses: actions/cache@v3
         with:
@@ -42,6 +41,15 @@ jobs:
         with:
           targetPlatform: WebGL
           allowDirtyBuild: true
+
+      # Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t my-app:${{ github.sha }} .
+        env:
+          DOCKER_BUILDKIT: 1
+          DOCKER_CLI_EXPERIMENTAL: enabled
+
 
       # Output
       - uses: actions/upload-artifact@v4
