@@ -42,10 +42,11 @@ jobs:
           targetPlatform: Android
           allowDirtyBuild: true
 
-      # Build Docker image for local runner
+      #
       - name: Build Docker image for local runner
         run: |
-          docker build -t my-app:${{ github.sha }} .
+          docker build -t my-app:${{ https://github.com/unibuc-cs/software-engineering-product-olimpicii }} .
+        working-directory: C:/actions-runner/_work
         env:
           DOCKER_BUILDKIT: 1
           DOCKER_CLI_EXPERIMENTAL: enabled
