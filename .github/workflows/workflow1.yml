@@ -21,7 +21,7 @@ jobs:
       - run: docker build -t my-imagee 
 
       - name: Run Docker container
-      - run: docker run my-image 
+      - run: docker run my-image .
       
       # Cache
       - uses: actions/cache@v3
