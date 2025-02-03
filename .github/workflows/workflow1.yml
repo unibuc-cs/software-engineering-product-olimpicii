@@ -45,7 +45,7 @@ jobs:
       #
       - name: Build Docker image for local runner
         run: |
-          docker build -t my-app:${{ github.sha }} .
+          docker build -t my-app:${{ github.sha }} C:/actions-runner/_work
         working-directory: C:/actions-runner/_work
         env:
           DOCKER_BUILDKIT: 1
